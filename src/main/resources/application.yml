@@ -1,0 +1,21 @@
+spring:
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        password: Urmat0204
+        url: jdbc:postgresql://localhost:5432/jwtjava15
+        username: postgres
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+
+server:
+    port: 8080
+    error:
+        include-message: always
+
+app:
+    security:
+        jwt:
+            secret_key: java15-jwt-token-skdjfksljdflksjearsdkfjksdjfskldjfsl
+            expiration: 604800
