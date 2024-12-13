@@ -4,6 +4,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import peaksoft.exceptions.BadRequestException;
+import peaksoft.exceptions.NotfoundException;
 import peaksoft.models.User;
 
 import java.util.Optional;
@@ -17,7 +19,7 @@ public interface UserRepo  extends JpaRepository<User, Long> {
 
     default User getUserByEmail(String email) {
         return findByEmail(email).orElseThrow(() ->
-                new EntityNotFoundException("User with " + email + " not found!")
+                new NotfoundException("User with " + email + " not found!")
         );
     }
 

@@ -1,5 +1,6 @@
 package peaksoft.api;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,14 +11,14 @@ import peaksoft.service.UserService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/auth")
+@RequestMapping("/api/auth")
 public class AuthAPI {
 
     private final UserService userService;
 
 
     @PostMapping("/sign-up")
-    public SingUpSingUpResponse signUp (@RequestBody RegisterRequest registerRequest){
+    public SingUpSingUpResponse signUp (@Valid @RequestBody RegisterRequest registerRequest){
         return userService.signUp(registerRequest);
     }
 

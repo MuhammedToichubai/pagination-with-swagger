@@ -1,6 +1,6 @@
 package peaksoft.dto.request;
 
-public record SignInRequest(
+public record   SignInRequest(
         String email,
         String password
 ) {

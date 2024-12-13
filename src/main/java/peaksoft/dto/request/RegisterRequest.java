@@ -1,10 +1,14 @@
 package peaksoft.dto.request;
 
-public record RegisterRequest(
+import peaksoft.validations.EmailValidation;
+import peaksoft.validations.PasswordValidation;
 
+public record RegisterRequest(
         String name,
         String avatar,
+        @EmailValidation
         String email,
+        @PasswordValidation
         String  password
 ) {
 }

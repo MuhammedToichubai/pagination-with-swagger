@@ -12,6 +12,8 @@ import peaksoft.dto.response.PostByUserResponse;
 import peaksoft.dto.response.SingUpSingUpResponse;
 import peaksoft.dto.response.UserProfileResponse;
 import peaksoft.emuns.Role;
+import peaksoft.exceptions.BadRequestException;
+import peaksoft.exceptions.NotfoundException;
 import peaksoft.models.User;
 import peaksoft.repo.UserRepo;
 import peaksoft.service.UserService;
@@ -32,7 +34,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public SingUpSingUpResponse signUp(RegisterRequest registerRequest) {
         if (userRepo.existsByEmail(registerRequest.email())) {
-            throw new RuntimeException("Email already in use");
+            throw new BadRequestException("Email already in use");
         }
         User saveUser = userRepo.save(
                 User.
@@ -56,9 +58,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public SingUpSingUpResponse signIn(SignInRequest inRequest) {
-        User user = userRepo.findUserByEmailEqualsIgnoreCase(inRequest.email());
+        User user = userRepo.getUserByEmail(inRequest.email());
         if (!passwordEncoder.matches(inRequest.password(), user.getPassword())) {
-            throw new RuntimeException("Invalid password");
+            throw new BadRequestException("Invalid password");
         }
 
         return SingUpSingUpResponse
@@ -88,7 +90,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserProfileResponse findById(Long userId) {
         User user = userRepo.findById(userId).orElseThrow(
-                ()-> new RuntimeException("not found user id "+ userId));
+                ()-> new BadRequestException("not found user id "+ userId));
         return UserProfileResponse
                 .builder()
                 .id(user.getId())
