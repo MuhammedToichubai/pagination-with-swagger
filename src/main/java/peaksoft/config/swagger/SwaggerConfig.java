@@ -15,6 +15,7 @@ public class SwaggerConfig {
     private static final String  API_KEY = "Bearer Token";
     @Bean
     public OpenAPI customOpenAPI(){
+        // todo 2
 
         return  new OpenAPI()
                 .components(new Components()
@@ -25,6 +26,7 @@ public class SwaggerConfig {
 
     }
     public SecurityScheme apiKeySecurityScheme(){
+
         return new SecurityScheme()
                 .name("AUTH API")
                 .description("Please put the token")
@@ -33,4 +35,6 @@ public class SwaggerConfig {
                 .scheme("Bearer");
 
     }
+
+
 }
