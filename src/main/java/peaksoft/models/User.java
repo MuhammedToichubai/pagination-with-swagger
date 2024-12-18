@@ -1,8 +1,11 @@
 package peaksoft.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +28,8 @@ public class User implements UserDetails {
     @GeneratedValue( strategy = GenerationType.IDENTITY)
 
     Long id;
+//    @Column(length = 50, nullable = false) // Database column max length is 50
+//    @Size(min = 5, max = 50, message = "Name must be between 5 and 50 characters")
     String name;
     String email;
     String password;

@@ -1,22 +1,21 @@
 spring:
     datasource:
         driver-class-name: org.postgresql.Driver
-        password: Urmat0204
-        url: jdbc:postgresql://localhost:5432/jwtjava15
+        url: jdbc:postgresql://localhost:5454/java15
         username: postgres
+        password: postgres
     jpa:
         hibernate:
-            ddl-auto: update
+            ddl-auto: validate
         show-sql: true
     messages:
         basename: messages
 
 server:
 
-    port: 8080
+    port: 9797
     error:
         include-message: always
-
 
 
 app:

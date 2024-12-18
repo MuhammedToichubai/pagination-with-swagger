@@ -34,7 +34,9 @@ public class SecurityConfig {
                 authorizeRequests -> {
                     authorizeRequests.requestMatchers(
                                     "/api/auth/sign-In",
-                                    "/api/auth/sign-up"
+                                    "/api/auth/sign-up",
+                            "/api/users",
+                            "/swagger-ui/index.html/**"
                             ).permitAll()
                             .anyRequest()
                             .authenticated();

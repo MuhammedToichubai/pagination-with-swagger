@@ -1,19 +1,21 @@
 package peaksoft.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import peaksoft.config.jwt.JwtService;
 import peaksoft.dto.request.RegisterRequest;
 import peaksoft.dto.request.SignInRequest;
-import peaksoft.dto.response.GetAllUserResponse;
-import peaksoft.dto.response.PostByUserResponse;
-import peaksoft.dto.response.SingUpSingUpResponse;
-import peaksoft.dto.response.UserProfileResponse;
+import peaksoft.dto.response.*;
 import peaksoft.emuns.Role;
 import peaksoft.exceptions.BadRequestException;
 import peaksoft.exceptions.NotfoundException;
+import peaksoft.exceptions.response.ExceptionResponse;
 import peaksoft.models.User;
 import peaksoft.repo.UserRepo;
 import peaksoft.service.UserService;
@@ -34,8 +36,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public SingUpSingUpResponse signUp(RegisterRequest registerRequest) {
         if (userRepo.existsByEmail(registerRequest.email())) {
-            throw new BadRequestException("Email already in use");
+            throw new BadRequestException("Email already exists");
         }
+
         User saveUser = userRepo.save(
                 User.
                         builder()
@@ -90,7 +93,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserProfileResponse findById(Long userId) {
         User user = userRepo.findById(userId).orElseThrow(
-                ()-> new BadRequestException("not found user id "+ userId));
+                () -> new BadRequestException("not found user id " + userId));
         return UserProfileResponse
                 .builder()
                 .id(user.getId())
@@ -132,4 +135,22 @@ public class UserServiceImpl implements UserService {
         return responseList;
     }
 
+    @Override
+    public PaginationResponse<UserResponse> getAllWithPagination(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber - 1 , pageSize);
+        Page<User> usersPage = userRepo.findAll(pageable);
+
+        List<UserResponse> responseList = new ArrayList<>();
+
+        usersPage.getContent().forEach(user ->
+                responseList.add(new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getRole())));
+
+        PaginationResponse<UserResponse> paginationResponse = new PaginationResponse<>();
+        paginationResponse.setPageNumber(usersPage.getNumber() + 1 );
+        paginationResponse.setPageSize(usersPage.getSize());
+        paginationResponse.setNumberOfPages(usersPage.getTotalPages());
+        paginationResponse.setNumberOfElements(usersPage.getTotalElements());
+        paginationResponse.setObjects(responseList);
+        return paginationResponse;
+    }
 }

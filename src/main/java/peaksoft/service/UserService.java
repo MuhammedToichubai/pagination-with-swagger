@@ -2,9 +2,7 @@ package peaksoft.service;
 
 import peaksoft.dto.request.RegisterRequest;
 import peaksoft.dto.request.SignInRequest;
-import peaksoft.dto.response.GetAllUserResponse;
-import peaksoft.dto.response.SingUpSingUpResponse;
-import peaksoft.dto.response.UserProfileResponse;
+import peaksoft.dto.response.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -21,4 +19,5 @@ public interface UserService {
 
     List<GetAllUserResponse> getAllUser();
 
+    PaginationResponse<UserResponse> getAllWithPagination(int pageNumber, int pageSize);
 }
